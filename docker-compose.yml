@@ -1,0 +1,27 @@
+
+
+services:
+  chatserver:
+    build:
+      context: .
+      dockerfile: goServer/Dockerfile
+    container_name: chat_server
+    ports:
+      - "9090:9090"
+    networks:
+      - chatnet
+
+  chatclient:
+    build:
+      context: .
+      dockerfile: goClient/Dockerfile
+    depends_on:
+      - chatserver
+    networks:
+      - chatnet
+    stdin_open: true
+    tty: true
+
+networks:
+  chatnet:
+    driver: bridge

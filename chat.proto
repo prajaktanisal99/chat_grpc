@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package chat;
+
+option go_package="/chat";
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+    string id = 1;
+    string name = 2;
+}
+
+message Message {
+    string senderId = 1;
+    string receiverId = 2;
+    string content = 3;
+    google.protobuf.Timestamp timestamp = 4;
+}
+
+message Connect {
+    User user = 1;
+    bool active = 2;
+}
+
+message Close {}
+
+service ChatService {
+    rpc CreateStream(Connect) returns (stream Message);
+
+    rpc SendMessage(Message) returns (Close);
+
+    rpc BroadcastMessage(Message) returns (Close);
+
+}
